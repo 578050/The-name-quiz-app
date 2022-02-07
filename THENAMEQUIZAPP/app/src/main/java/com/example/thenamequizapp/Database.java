@@ -18,7 +18,6 @@ public class Database extends AppCompatActivity {
     private ListView listView;
     private AnimalAdapter adapter;
     private Animal animalObj = new Animal();
-    private static boolean run = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +26,6 @@ public class Database extends AppCompatActivity {
 
             listView = (ListView) findViewById(R.id.listView);
 
-            database();
 
             adapter = new AnimalAdapter(this, R.layout.database_list_row, animalObj.getAnimals());
             listView.setAdapter(adapter);
@@ -84,24 +82,5 @@ public class Database extends AppCompatActivity {
 
     }
 
-    private ArrayList<Animal> database(){
 
-        if(!run) {
-            Bitmap catImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.cat);
-            Bitmap dogImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.dog);
-            Bitmap elephantImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.elephant);
-
-            Animal cat = new Animal("Cat", catImage);
-            Animal dog = new Animal("Dog", dogImage);
-            Animal elephant = new Animal("Elephant", elephantImage);
-
-            animalObj.addAnimal(cat);
-            animalObj.addAnimal(dog);
-            animalObj.addAnimal(elephant);
-
-            run = true;
-        }
-
-        return animalObj.getAnimals();
-    }
 }
