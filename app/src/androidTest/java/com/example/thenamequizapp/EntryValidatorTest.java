@@ -1,6 +1,7 @@
 package com.example.thenamequizapp;
 
 
+import static androidx.test.espresso.Espresso.closeSoftKeyboard;
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -24,31 +25,14 @@ import org.junit.runner.RunWith;
 public class EntryValidatorTest {
 
     @Rule
-    public ActivityScenarioRule<DatabaseActivity> mActivityRule = new ActivityScenarioRule<>(
-            DatabaseActivity.class);
-
+    public ActivityScenarioRule<AddEntry> mActivityRule = new ActivityScenarioRule<>(
+            AddEntry.class);
 
     @Test
     public void addPerson() {
-
         onView(withId(R.id.addName)).perform(replaceText("Thomas"));
-        onView(withId(R.id.pic)).perform(click());
-
+        closeSoftKeyboard();
 
     }
 
-    @Test
-    public void deletePerson() {
-        onView(withId(R.id.delete));
-
-        onData(anything())
-                .inAdapterView(withId(android.R.id.list))
-                .atPosition(0)
-                .check(matches(withText("Cat")));
-
-
-        //   onData(is(instanceOf(String.class)), is("Americano")));
-
-   //     onView(allOf(withId(R.id.delete), hasSibling(withText("Cat")))).perform(click());
-    }
 }
