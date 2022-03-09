@@ -46,6 +46,6 @@ public class MainMenuValidatorTest {
     @Test
     public void startActivityTest(){
         onView(withId(R.id.database)).perform(click());
-        onView(withId(R.id.database)).check(matches(isDisplayed()));
+        onView(withId(R.id.database_site)).check(matches(isDisplayed()));
     }
 }
