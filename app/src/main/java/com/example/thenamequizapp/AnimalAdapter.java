@@ -43,7 +43,7 @@ public class AnimalAdapter extends ArrayAdapter<Animal> {
         ImageView imageView = convertView.findViewById(R.id.image);
         TextView textView = convertView.findViewById(R.id.name);
 
-        byte[] bytes = getItem(position).getImage();
+        byte[] bytes = getItem(position).getBytes();
         Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         imageView.setImageBitmap(image);
         textView.setText(getItem(position).getName());

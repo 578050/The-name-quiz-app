@@ -41,6 +41,7 @@ public class DatabaseActivity extends AppCompatActivity {
     private AnimalAdapter adapter;
     private Animal animalObj = new Animal();
     private AppDatabase db;
+    private boolean run = false;
 
 
     List<Animal> animalList;
@@ -55,7 +56,10 @@ public class DatabaseActivity extends AppCompatActivity {
         Button sortZ_A = findViewById(R.id.sortZ_A);
         listView = (ListView) findViewById(R.id.listView);
 
+        runDatabase();
         getAllAnimals();
+
+
         adapter = new AnimalAdapter(this, R.layout.database_list_row, animalObj.getAnimals());
         listView.setAdapter(adapter);
 
@@ -75,23 +79,12 @@ public class DatabaseActivity extends AppCompatActivity {
         });
     }
 
-    public void getFromDb() {
-
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cat);
-        Bitmap catBitmap = Bitmap.createScaledBitmap(bitmap,1000,1333,true);
-
-        byte[] catByte = convertToByteArray(catBitmap);
-        Animal cat = new Animal(7, "Cat", catByte);
-
-        db.AnimalDao().insert(cat);
-
-        animalList = db.AnimalDao().getAll();
-
-    }
 
     public void getAllAnimals() {
-        getFromDb();
+        animalObj.getAnimals().clear();
+        animalList = db.AnimalDao().getAll();
         for(Animal animal : animalList){
+            animal = readyForDisplay(animal);
             animalObj.addAnimal(animal);
         }
     }
@@ -99,10 +92,48 @@ public class DatabaseActivity extends AppCompatActivity {
 
     public static byte[] convertToByteArray(Bitmap bitmap){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0,stream);
+        Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap,500,500,true);
+        newBitmap.compress(Bitmap.CompressFormat.PNG, 0,stream);
         byte[] bitmapData = stream.toByteArray();
 
         return bitmapData;
+    }
+
+    public static Animal readyForDisplay(Animal animal){
+        byte[] bytes = animal.getBytes();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+        animal.setImage(bitmap);
+        return animal;
+    }
+
+    private void runDatabase(){
+
+        if(!run){
+
+            Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.cat);
+            byte[] catByte = convertToByteArray(bitmap1);
+
+            Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.dog);
+            byte[] dogByte = convertToByteArray(bitmap2);
+
+            Bitmap bitmap3 = BitmapFactory.decodeResource(getResources(), R.drawable.elephant);
+            byte[] elephantByte = convertToByteArray(bitmap3);
+
+
+            Animal cat = new Animal(1, "Cat", catByte);
+            Animal dog = new Animal(2, "Dog", dogByte);
+            Animal elephant = new Animal(3, "Elephant", elephantByte);
+
+
+            db.AnimalDao().insert(dog);
+            db.AnimalDao().insert(cat);
+            db.AnimalDao().insert(elephant);
+
+            run = true;
+
+        } else {
+            run = true;
+        }
     }
     private void sortArrayListA_Z(){
 

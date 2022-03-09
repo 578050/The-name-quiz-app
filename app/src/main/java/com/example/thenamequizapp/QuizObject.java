@@ -59,7 +59,7 @@ public class QuizObject {
 
     //Send Image
     public static byte[] getChosenImage(){
-        return chosenAnimal.getImage();
+        return chosenAnimal.getBytes();
     }
 
 

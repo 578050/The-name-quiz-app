@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 @Entity
 public class Animal implements Serializable {
 
@@ -21,14 +23,26 @@ public class Animal implements Serializable {
     @ColumnInfo(name = "name")
     private String name;
     @ColumnInfo(name = "image")
-    private byte[] image;
+    private byte[] bytes;
+
+    @Ignore
+    private Bitmap image;
+    @Ignore
+    private AppDatabase db;
 
     private static ArrayList<Animal> animals = new ArrayList<>();
+
 
     public Animal(){
 
     }
-    public Animal(int id, String name, byte[] image){
+    public Animal(int id, String name, byte[] bytes){
+        this.id = id;
+        this.name = name;
+        this.bytes = bytes;
+    }
+
+    public Animal(int id, String name, Bitmap image){
         this.id = id;
         this.name = name;
         this.image = image;
@@ -52,16 +66,23 @@ public class Animal implements Serializable {
         this.name = name;
     }
 
-    public byte[] getImage () {
+    public byte[] getBytes () {
 
+        return bytes;
+    }
+
+    public void setBytes(byte[] bytes) {
+
+        this.bytes = bytes;
+    }
+
+    public Bitmap getImage(){
         return image;
     }
 
-    public void setImage(byte[] image) {
-
+    public void setImage(Bitmap image) {
         this.image = image;
     }
-
 
     public void addAnimal(Animal animal){
 
@@ -96,11 +117,9 @@ public class Animal implements Serializable {
     }
 
     public int createId(){
-        int id = -1;
-        id++;
-
-        return id;
-
+        List<Animal> list = db.AnimalDao().getAll();
+        int id = list.get(list.size()-1).getId();
+        return id++;
     }
 
 }

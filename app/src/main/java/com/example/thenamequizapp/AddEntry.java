@@ -35,6 +35,7 @@ public class AddEntry extends AppCompatActivity {
     private EditText editText;
     private Animal animalObj = new Animal();
     private AnimalAdapter adapter;
+    private AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,62 +111,45 @@ public class AddEntry extends AppCompatActivity {
             Uri selectedImageUri = data.getData();
             if (selectedImageUri != null){
                 try{
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
                     Bitmap bitmapImage = BitmapFactory.decodeStream(inputStream);
-                    bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    byte[] image = stream.toByteArray();
+                    byte[] imageBytes = DatabaseActivity.convertToByteArray(bitmapImage);
+
                     String name = editText.getText().toString();
                     int id = animalObj.createId();
-                    //Animal animal = new Animal(id,name,image);
-                   //animalObj.addAnimal(animal);
+                    Animal animal = new Animal(id,name,imageBytes);
 
-                    //insert(animal);
+                    db.AnimalDao().insert(animal);
 
                     startActivity(new Intent(getApplicationContext(), DatabaseActivity.class));
                     adapter.notifyDataSetChanged();
 
                 } catch (Exception exception){
-                    //Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }else{
 
                 try {
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     Bitmap bitmapImage = (Bitmap) data.getExtras().get("data");
-                    bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    byte[] image = stream.toByteArray();
+                    byte[] imageBytes = DatabaseActivity.convertToByteArray(bitmapImage);
                     String name = editText.getText().toString();
                     int id = animalObj.createId();
-                    //Animal animal = new Animal(id,name, image);
-                   // animalObj.addAnimal(animal);
+
+
+
+                    Animal animal = new Animal(id,name, imageBytes);
+                    db.AnimalDao().insert(animal);
+
+
+
                     startActivity(new Intent(getApplicationContext(), DatabaseActivity.class));
                     adapter.notifyDataSetChanged();
                 } catch (Exception exception){
-                    //Toast.makeText(this,exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,exception.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
         }
-    }
-
-    public void openDatabase() {
-        Intent intent = new Intent(this, DatabaseActivity.class);
-        startActivity(intent);
-    }
-
-
-    public void insert(Animal animal){
-
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-               // AppDatabase.getInstance(getApplicationContext().AnimalDao().insert(animal);
-            }
-        });
-
-        thread.start();
-
     }
 
 }

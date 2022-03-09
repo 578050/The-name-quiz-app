@@ -9,7 +9,7 @@ import androidx.room.TypeConverters;
 
 import java.io.File;
 
-@Database(entities = {Animal.class}, version = 9)
+@Database(entities = {Animal.class}, version = 15)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract AnimalDao AnimalDao();
@@ -18,7 +18,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static AppDatabase getDatabase(Context context){
         if(instance == null){
-            instance = Room.databaseBuilder(context.getApplicationContext(),AppDatabase.class,"animal")
+            instance = Room.databaseBuilder(context.getApplicationContext(),AppDatabase.class,"animals")
                     .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()
                     .build();
