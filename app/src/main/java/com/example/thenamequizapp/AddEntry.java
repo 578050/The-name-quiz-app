@@ -42,11 +42,15 @@ public class AddEntry extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.addentry);
 
+        db = AppDatabase.getDatabase(this.getApplicationContext());
+
         imageView = (ImageView) findViewById(R.id.image);
         textView = (TextView) findViewById(R.id.name);
         picture = findViewById(R.id.pic);
         gallery = findViewById(R.id.gallery);
         editText = findViewById(R.id.addName);
+
+
 
 
         picture.setOnClickListener(new View.OnClickListener() {

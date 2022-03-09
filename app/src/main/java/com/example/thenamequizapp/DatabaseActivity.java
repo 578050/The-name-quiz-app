@@ -56,7 +56,7 @@ public class DatabaseActivity extends AppCompatActivity {
         Button sortZ_A = findViewById(R.id.sortZ_A);
         listView = (ListView) findViewById(R.id.listView);
 
-        runDatabase();
+        runDatabase();  //This method is used to prepopulate the database if needed
         getAllAnimals();
 
 

@@ -2,6 +2,10 @@ package com.example.thenamequizapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -13,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
+
 
 public class Quiz extends AppCompatActivity {
 
@@ -25,6 +29,7 @@ public class Quiz extends AppCompatActivity {
     private int score;
     private int trY;
 
+    private QuizViewModel viewModel;
 
 
     @Override
@@ -32,16 +37,23 @@ public class Quiz extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz);
 
+        viewModel = new ViewModelProvider(this).get(QuizViewModel.class);
+        score = viewModel.getScore();
+        trY = viewModel.getTrY();
 
         animalNames = QuizObject.getMultiChoiceNames();
 
         listView = (ListView) findViewById(R.id.quizList);
         imageView = (ImageView) findViewById(R.id.quizImage);
+        TextView scoreTextView = (TextView) findViewById(R.id.score);
+
+        scoreTextView.setText("Score: " + score + "/" + trY);
 
         adapter = new QuizAdapter(this, R.layout.quiz_list_raw, animalNames);
 
         byte[] bytes = QuizObject.getChosenImage();
         Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
         imageView.setImageBitmap(image);
         listView.setAdapter(adapter);
 
@@ -52,18 +64,20 @@ public class Quiz extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String name = animalNames.get(i);
                 boolean answer = QuizObject.correctAnswer(name);
-                TextView scoreTextView = (TextView) findViewById(R.id.score);
                 String rightName = QuizObject.chosenAnimalName();
 
 
                 if(answer){
                     Toast.makeText(getApplicationContext(), "You are correct!!!!",Toast.LENGTH_LONG).show();
-                    score =QuizObject.addScore();
-                    trY = QuizObject.addTry();
+                    score = viewModel.addScore();
+                    trY = viewModel.addTry();
+
                 }else{
                     Toast.makeText(getApplicationContext(), "Oops!  the correct answer is: " + rightName,Toast.LENGTH_LONG).show();
-                    trY = QuizObject.addTry();
+                    trY = viewModel.addTry();
+
                 }
+
 
                 scoreTextView.setText("Score: " + score + "/" + trY);
 
@@ -73,14 +87,13 @@ public class Quiz extends AppCompatActivity {
                 Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 imageView.setImageBitmap(image);
 
+
                 QuizAdapter adapter2 = new QuizAdapter(Quiz.this, R.layout.quiz_list_raw, animalNames);
 
                 listView.setAdapter(adapter2);
 
             }
         });
-
-
 
     }
 

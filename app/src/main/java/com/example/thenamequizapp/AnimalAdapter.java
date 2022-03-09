@@ -23,6 +23,7 @@ public class AnimalAdapter extends ArrayAdapter<Animal> {
     private Context mContext;
     private int mResource;
     private Animal animalObj = new Animal();
+    private AppDatabase db;
 
 
     public AnimalAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Animal> objects) {
@@ -39,6 +40,7 @@ public class AnimalAdapter extends ArrayAdapter<Animal> {
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         convertView = layoutInflater.inflate(mResource, parent, false);
+        db = AppDatabase.getDatabase(mContext);
 
         ImageView imageView = convertView.findViewById(R.id.image);
         TextView textView = convertView.findViewById(R.id.name);
@@ -69,13 +71,15 @@ public class AnimalAdapter extends ArrayAdapter<Animal> {
 
     private void deleteAnimal(String name) {
 
-        Animal animal = null;
+        Animal animal  = null;
+
         for(int i = 0; i < animalObj.getAnimals().size(); i++){
             if(animalObj.getAnimals().get(i).getName() == name){
                 animal = animalObj.getAnimals().get(i);
             }
         }
 
+        db.AnimalDao().delete(animal);
         animalObj.removeAnimal(animal);
         notifyDataSetChanged();
 

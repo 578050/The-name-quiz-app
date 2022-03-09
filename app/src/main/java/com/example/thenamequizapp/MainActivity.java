@@ -20,14 +20,23 @@ public class MainActivity extends AppCompatActivity {
     private Button quiz_button;
     private Button addEntry_button;
     private Animal animalObj = new Animal();
-    private static boolean run = false;
+    private AppDatabase db;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        database();
+        db = AppDatabase.getDatabase(this.getApplicationContext());
+        List<Animal> list = db.AnimalDao().getAll();
+        for(Animal animal: list){
+            animal = DatabaseActivity.readyForDisplay(animal);
+            animalObj.addAnimal(animal);
+        }
+
+
         database_button = findViewById(R.id.database);
         quiz_button = findViewById(R.id.quiz);
         addEntry_button = findViewById(R.id.addEntry);
@@ -69,14 +78,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddEntry.class);
         startActivity(intent);
     }
-
-    private void database() {
-
-        if (!run) {
-
-            run = true;
-        }
-    }
-
 
 }
