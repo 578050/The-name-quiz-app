@@ -43,10 +43,10 @@ public class AnimalAdapter extends ArrayAdapter<Animal> {
         ImageView imageView = convertView.findViewById(R.id.image);
         TextView textView = convertView.findViewById(R.id.name);
 
-        //byte[] bytes = getItem(position).getImageBytes();
-      //  Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-       // imageView.setImageBitmap(image);
-       // textView.setText(getItem(position).getName());
+        byte[] bytes = getItem(position).getImage();
+        Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        imageView.setImageBitmap(image);
+        textView.setText(getItem(position).getName());
 
 
         Button delete = (Button) convertView.findViewById(R.id.delete);

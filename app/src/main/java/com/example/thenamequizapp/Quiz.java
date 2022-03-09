@@ -40,10 +40,10 @@ public class Quiz extends AppCompatActivity {
 
         adapter = new QuizAdapter(this, R.layout.quiz_list_raw, animalNames);
 
-        //byte[] bytes = QuizObject.getChosenImage();
-        //Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        //imageView.setImageBitmap(image);
-        //listView.setAdapter(adapter);
+        byte[] bytes = QuizObject.getChosenImage();
+        Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        imageView.setImageBitmap(image);
+        listView.setAdapter(adapter);
 
 
 
@@ -69,9 +69,9 @@ public class Quiz extends AppCompatActivity {
 
                 animalNames = QuizObject.getMultiChoiceNames();
 
-                //byte[] bytes = QuizObject.getChosenImage();
-                //Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                //imageView.setImageBitmap(image);
+                byte[] bytes = QuizObject.getChosenImage();
+                Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                imageView.setImageBitmap(image);
 
                 QuizAdapter adapter2 = new QuizAdapter(Quiz.this, R.layout.quiz_list_raw, animalNames);
 
