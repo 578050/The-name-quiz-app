@@ -1,6 +1,8 @@
 package com.example.thenamequizapp;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +17,15 @@ import androidx.annotation.Nullable;
 
 import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AnimalAdapter extends ArrayAdapter<Animal> {
 
     private Context mContext;
     private int mResource;
     private Animal animalObj = new Animal();
+    private AppDatabase db;
+    private List<Animal> animalList;
 
 
     public AnimalAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Animal> objects) {
@@ -35,13 +40,17 @@ public class AnimalAdapter extends ArrayAdapter<Animal> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
 
+        db = AppDatabase.getDatabase(mContext);
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         convertView = layoutInflater.inflate(mResource, parent, false);
 
         ImageView imageView = convertView.findViewById(R.id.image);
         TextView textView = convertView.findViewById(R.id.name);
 
-        imageView.setImageBitmap(getItem(position).getImageBitmap());
+        //byte[] bytes = getItem(position).getBytes();
+        //Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        Bitmap image = getItem(position).getImage();
+        imageView.setImageBitmap(image);
         textView.setText(getItem(position).getName());
 
 
@@ -72,6 +81,13 @@ public class AnimalAdapter extends ArrayAdapter<Animal> {
             }
         }
 
+        db.AnimalDao().delete(animal);
+        animalList = db.AnimalDao().getAll();
+        for(Animal animal1 : animalList){
+            Animal a = DatabaseActivity.readyForDisplay(animal1);
+            animalObj.getAnimals().clear();
+            animalObj.addAnimal(a);
+        }
         animalObj.removeAnimal(animal);
         notifyDataSetChanged();
 

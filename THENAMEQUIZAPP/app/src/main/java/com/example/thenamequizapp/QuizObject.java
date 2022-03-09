@@ -58,8 +58,8 @@ public class QuizObject {
     }
 
     //Send Image
-    public static Bitmap getChosenImage(){
-        return chosenAnimal.getImageBitmap();
+    public static byte[] getChosenImage(){
+        return chosenAnimal.getBytes();
     }
 
 

@@ -3,6 +3,7 @@ package com.example.thenamequizapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -39,7 +40,9 @@ public class Quiz extends AppCompatActivity {
 
         adapter = new QuizAdapter(this, R.layout.quiz_list_raw, animalNames);
 
-        imageView.setImageBitmap(QuizObject.getChosenImage());
+        byte[] bytes = QuizObject.getChosenImage();
+        Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        imageView.setImageBitmap(image);
         listView.setAdapter(adapter);
 
 
@@ -65,7 +68,10 @@ public class Quiz extends AppCompatActivity {
                 scoreTextView.setText("Score: " + score + "/" + trY);
 
                 animalNames = QuizObject.getMultiChoiceNames();
-                imageView.setImageBitmap(QuizObject.getChosenImage());
+
+                byte[] bytes = QuizObject.getChosenImage();
+                Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                imageView.setImageBitmap(image);
 
                 QuizAdapter adapter2 = new QuizAdapter(Quiz.this, R.layout.quiz_list_raw, animalNames);
 
