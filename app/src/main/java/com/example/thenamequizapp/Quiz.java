@@ -68,13 +68,15 @@ public class Quiz extends AppCompatActivity {
 
 
                 if(answer){
-                    Toast.makeText(getApplicationContext(), "You are correct!!!!",Toast.LENGTH_LONG).show();
-                    score = viewModel.addScore();
-                    trY = viewModel.addTry();
-
+                    Toast.makeText(getApplicationContext(), "You are correct!!!!",Toast.LENGTH_SHORT).show();
+                    viewModel.addScore();
+                    score = viewModel.getScore();
+                    viewModel.addTry();
+                    trY = viewModel.getTrY();
                 }else{
                     Toast.makeText(getApplicationContext(), "Oops!  the correct answer is: " + rightName,Toast.LENGTH_LONG).show();
-                    trY = viewModel.addTry();
+                    viewModel.addTry();
+                    trY = viewModel.getTrY();
 
                 }
 

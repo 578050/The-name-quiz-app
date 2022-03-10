@@ -19,7 +19,6 @@ public class QuizObject {
 
         ArrayList<Animal> animals = animalObj.getAnimals();
         Collections.shuffle(animals);
-        int index = (int)(Math.random() * animals.size());
 
 
         chosenAnimal = animals.get(1);
@@ -74,16 +73,5 @@ public class QuizObject {
         return correctAnswer;
     }
 
-
-    //keeping score
-    public static int addScore(){
-        score++;
-        return score;
-    }
-
-    public static int addTry(){
-        trY++;
-        return trY;
-    }
 
 }
