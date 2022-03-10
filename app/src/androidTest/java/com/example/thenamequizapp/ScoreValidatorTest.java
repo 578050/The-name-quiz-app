@@ -1,9 +1,14 @@
 package com.example.thenamequizapp;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withSubstring;
+
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.anything;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -23,9 +28,17 @@ public class ScoreValidatorTest {
             Quiz.class);
 
     @Test
-    public void correctScore() {
-       int number = 0;
-        onView(withId(R.id.score)).check(matches(withSubstring("Score: " + 1 + "/" + number)));
+    public void correctScore() throws InterruptedException {
+        Thread.sleep(5000);
+     //   onView(withId(R.id.quizList)).perform(click());
+     //   onData(anything()).inAdapterView(withId(R.id.quizList)).atPosition(0).perform(click());
+
+        onData(allOf())
+                .inAdapterView(withId(R.id.quizList))
+                .atPosition(0)
+                .perform(click());
+  //     int number = 1;
+    //    onView(withId(R.id.score)).check(matches(withSubstring("Score: " + 1 + "/" + number)));
     }
 
 
