@@ -2,6 +2,8 @@ package com.example.thenamequizapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -25,7 +27,7 @@ public class Quiz extends AppCompatActivity {
     private QuizAdapter adapter;
 
     private ImageView imageView;
-    private ArrayList<String> animalNames;
+    private MutableLiveData<ArrayList<String>> animalNames;
     private int score;
     private int trY;
 
@@ -41,7 +43,8 @@ public class Quiz extends AppCompatActivity {
         score = viewModel.getScore();
         trY = viewModel.getTrY();
 
-        animalNames = QuizObject.getMultiChoiceNames();
+        animalNames = viewModel.getMultiChoiceNames();
+        ArrayList<String> animalNames2 = animalNames.getValue();
 
         listView = (ListView) findViewById(R.id.quizList);
         imageView = (ImageView) findViewById(R.id.quizImage);
@@ -49,12 +52,13 @@ public class Quiz extends AppCompatActivity {
 
         scoreTextView.setText("Score: " + score + "/" + trY);
 
-        adapter = new QuizAdapter(this, R.layout.quiz_list_raw, animalNames);
+        adapter = new QuizAdapter(this, R.layout.quiz_list_raw, animalNames2);
 
-        byte[] bytes = QuizObject.getChosenImage();
-        Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
+        LiveData<byte[]> bytes = viewModel.getChosenImage();
+        Bitmap image = BitmapFactory.decodeByteArray(bytes.getValue(), 0, bytes.getValue().length);
         imageView.setImageBitmap(image);
+
+
         listView.setAdapter(adapter);
 
 
@@ -62,19 +66,19 @@ public class Quiz extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String name = animalNames.get(i);
-                boolean answer = QuizObject.correctAnswer(name);
-                String rightName = QuizObject.chosenAnimalName();
+                String name = animalNames2.get(i);
+                MutableLiveData<Boolean> answer = viewModel.isCorrectAnswer(name);
+                MutableLiveData<String> rightName = viewModel.getChosenAnimalName();
 
 
-                if(answer){
+                if(answer.getValue()){
                     Toast.makeText(getApplicationContext(), "You are correct!!!!",Toast.LENGTH_SHORT).show();
                     viewModel.addScore();
                     score = viewModel.getScore();
                     viewModel.addTry();
                     trY = viewModel.getTrY();
                 }else{
-                    Toast.makeText(getApplicationContext(), "Oops!  the correct answer is: " + rightName,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Oops!  the correct answer is: " + rightName.getValue(),Toast.LENGTH_LONG).show();
                     viewModel.addTry();
                     trY = viewModel.getTrY();
 
@@ -83,14 +87,19 @@ public class Quiz extends AppCompatActivity {
 
                 scoreTextView.setText("Score: " + score + "/" + trY);
 
-                animalNames = QuizObject.getMultiChoiceNames();
 
-                byte[] bytes = QuizObject.getChosenImage();
-                Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                viewModel.chosen = false;
+                LiveData<byte[]> bytes = viewModel.getChosenImage();
+
+                viewModel.mulitpleChoiseSet = false;
+                animalNames = viewModel.getMultiChoiceNames();
+
+                Bitmap image = BitmapFactory.decodeByteArray(bytes.getValue(), 0, bytes.getValue().length);
                 imageView.setImageBitmap(image);
 
 
-                QuizAdapter adapter2 = new QuizAdapter(Quiz.this, R.layout.quiz_list_raw, animalNames);
+                QuizAdapter adapter2 = new QuizAdapter(Quiz.this, R.layout.quiz_list_raw, animalNames.getValue());
 
                 listView.setAdapter(adapter2);
 
