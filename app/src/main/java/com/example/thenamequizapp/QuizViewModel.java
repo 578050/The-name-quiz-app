@@ -18,7 +18,7 @@ public class QuizViewModel  extends ViewModel {
     private MutableLiveData<byte[]> chosenImage = new MutableLiveData<>();
     private MutableLiveData<Boolean> correctAnswer = new MutableLiveData<>();
     boolean chosen = false;
-    boolean mulitpleChoiseSet = false;
+    boolean answersSet = false;
 
 
     public int getScore() {
@@ -39,7 +39,7 @@ public class QuizViewModel  extends ViewModel {
 
 
     public MutableLiveData<Animal> getChosenAnimal() {
-        chosenAnimal.setValue(QuizObject.chosenAnimal());
+        chosenAnimal.setValue(QuizObject.choseAnimal());
         return chosenAnimal;
     }
 
@@ -50,15 +50,16 @@ public class QuizViewModel  extends ViewModel {
 
 
     public MutableLiveData<ArrayList<String>> getMultiChoiceNames() {
-        if(!mulitpleChoiseSet){
+        if(!answersSet){
             MultiChoiceNames.setValue(QuizObject.getMultiChoiceNames());
-            mulitpleChoiseSet = true;
+            answersSet = true;
         }
         return MultiChoiceNames;
     }
 
     public LiveData<byte[]> getChosenImage() {
         if(!chosen){
+            getChosenAnimal();
             chosenImage.setValue(QuizObject.getChosenImage());
             chosen = true;
         }

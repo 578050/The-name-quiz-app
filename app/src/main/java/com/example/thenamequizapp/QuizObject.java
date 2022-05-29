@@ -15,7 +15,7 @@ public class QuizObject {
 
     //Random selection of an animal & send image and store name
 
-    public static Animal chosenAnimal(){
+    public static Animal choseAnimal(){
 
         ArrayList<Animal> animals = animalObj.getAnimals();
         Collections.shuffle(animals);
@@ -39,7 +39,6 @@ public class QuizObject {
         ArrayList<String> animalNames = new ArrayList<>();
         ArrayList<Animal> animals = animalObj.getAnimals();
 
-        chosenAnimal();
         String chosenName = chosenAnimal.getName();
 
         for(Animal animal: animals){

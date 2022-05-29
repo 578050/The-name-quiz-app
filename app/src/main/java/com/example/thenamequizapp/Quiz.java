@@ -43,19 +43,20 @@ public class Quiz extends AppCompatActivity {
         score = viewModel.getScore();
         trY = viewModel.getTrY();
 
-        animalNames = viewModel.getMultiChoiceNames();
-
         listView = (ListView) findViewById(R.id.quizList);
         imageView = (ImageView) findViewById(R.id.quizImage);
         TextView scoreTextView = (TextView) findViewById(R.id.score);
 
         scoreTextView.setText("Score: " + score + "/" + trY);
 
-        adapter = new QuizAdapter(this, R.layout.quiz_list_raw, animalNames.getValue());
+
 
         LiveData<byte[]> bytes = viewModel.getChosenImage();
         Bitmap image = BitmapFactory.decodeByteArray(bytes.getValue(), 0, bytes.getValue().length);
         imageView.setImageBitmap(image);
+
+        animalNames = viewModel.getMultiChoiceNames();
+        adapter = new QuizAdapter(this, R.layout.quiz_list_raw, animalNames.getValue());
 
 
         listView.setAdapter(adapter);
@@ -87,11 +88,11 @@ public class Quiz extends AppCompatActivity {
                 scoreTextView.setText("Score: " + score + "/" + trY);
 
 
-                viewModel.mulitpleChoiseSet = false;
-                animalNames = viewModel.getMultiChoiceNames();
-
                 viewModel.chosen = false;
                 LiveData<byte[]> bytes2 = viewModel.getChosenImage();
+
+                viewModel.answersSet = false;
+                animalNames = viewModel.getMultiChoiceNames();
 
                 Bitmap image = BitmapFactory.decodeByteArray(bytes2.getValue(), 0, bytes2.getValue().length);
                 imageView.setImageBitmap(image);
