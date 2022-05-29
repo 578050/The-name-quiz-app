@@ -44,7 +44,6 @@ public class Quiz extends AppCompatActivity {
         trY = viewModel.getTrY();
 
         animalNames = viewModel.getMultiChoiceNames();
-        ArrayList<String> animalNames2 = animalNames.getValue();
 
         listView = (ListView) findViewById(R.id.quizList);
         imageView = (ImageView) findViewById(R.id.quizImage);
@@ -52,7 +51,7 @@ public class Quiz extends AppCompatActivity {
 
         scoreTextView.setText("Score: " + score + "/" + trY);
 
-        adapter = new QuizAdapter(this, R.layout.quiz_list_raw, animalNames2);
+        adapter = new QuizAdapter(this, R.layout.quiz_list_raw, animalNames.getValue());
 
         LiveData<byte[]> bytes = viewModel.getChosenImage();
         Bitmap image = BitmapFactory.decodeByteArray(bytes.getValue(), 0, bytes.getValue().length);
@@ -66,7 +65,7 @@ public class Quiz extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String name = animalNames2.get(i);
+                String name = animalNames.getValue().get(i);
                 MutableLiveData<Boolean> answer = viewModel.isCorrectAnswer(name);
                 MutableLiveData<String> rightName = viewModel.getChosenAnimalName();
 
@@ -88,14 +87,13 @@ public class Quiz extends AppCompatActivity {
                 scoreTextView.setText("Score: " + score + "/" + trY);
 
 
-
-                viewModel.chosen = false;
-                LiveData<byte[]> bytes = viewModel.getChosenImage();
-
                 viewModel.mulitpleChoiseSet = false;
                 animalNames = viewModel.getMultiChoiceNames();
 
-                Bitmap image = BitmapFactory.decodeByteArray(bytes.getValue(), 0, bytes.getValue().length);
+                viewModel.chosen = false;
+                LiveData<byte[]> bytes2 = viewModel.getChosenImage();
+
+                Bitmap image = BitmapFactory.decodeByteArray(bytes2.getValue(), 0, bytes2.getValue().length);
                 imageView.setImageBitmap(image);
 
 

@@ -42,7 +42,7 @@ public class AddEntry extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.addentry);
 
-        db = AppDatabase.getDatabase(this.getApplicationContext());
+        db = AppDatabase.getDatabase(getApplicationContext());
 
         imageView = (ImageView) findViewById(R.id.image);
         textView = (TextView) findViewById(R.id.name);
@@ -123,13 +123,16 @@ public class AddEntry extends AppCompatActivity {
                     int id = animalObj.createId();
                     Animal animal = new Animal(id,name,imageBytes);
 
+                    System.out.println(animal.getName() + animal.getId());
+
                     db.AnimalDao().insert(animal);
 
                     startActivity(new Intent(getApplicationContext(), DatabaseActivity.class));
                     adapter.notifyDataSetChanged();
 
                 } catch (Exception exception){
-                    Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
+                    System.out.println(exception.getMessage());
                 }
             }else{
 
@@ -149,7 +152,8 @@ public class AddEntry extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(), DatabaseActivity.class));
                     adapter.notifyDataSetChanged();
                 } catch (Exception exception){
-                    Toast.makeText(this,exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,exception.getMessage(), Toast.LENGTH_LONG).show();
+                    System.out.println(exception.getMessage());
                 }
             }
 
